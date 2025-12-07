@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria di Fisica</title>
+    <style>
+        /* Schema Colori*/
+        :root {
+            --primary-bg: #2e1e2d; /* Sfondo scuro principale */
+            --secondary-bg: #005366; /* bottone argomento */
+            --text-color: #ffffff; /* Testo chiaro */
+            --accent-color: #ffffff; /* lato bottone argomento */
+            --header-color: #ffffff; /* testo grande */
+            --formula-color: #ffffff; /* Colore evidenziazione formule */
+            --summary-color: #ffffff; /* Colore sommario */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0; /* Rimosso padding per centrare meglio il main */
+            display: flex;
+            justify-content: center;
+            
+            /* --- AGGIUNTE PER LO SFONDO --- */
+            background-color: var(--primary-bg); /* Colore fallback se l'immagine non carica */
+            background-image: url('mate1.jpg'); /* Immagine di sfondo */
+            background-attachment: fixed; /* L'immagine non scorre */
+            background-repeat: repeat; /* Ripetizione dell'immagine */
+            background-size: auto; /* Dimensione originale */
+            opacity: 1; /* Assicura che l'opacità sia standard per il body */
+        }
+
+        main {
+            width: 100%;
+            max-width: 800px;
+            /* AGGIUNTA: Sfondo semi-trasparente per il contenuto per garantire leggibilità sopra l'immagine */
+            background-color: #007599ba; 
+            padding: 2rem;
+            border-radius: 8px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1, h2 {
+            color: var(--header-color);
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        /* Stile Menu Principale */
+        #main-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        #main-menu li {
+            background-color: var(--secondary-bg);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        #main-menu li:hover {
+            background-color: #0760be; /* bottone argomento evidenziato */
+            transform: translateX(5px);
+        }
+        
+        #main-menu .category-title {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        /* Stile Sezione Teoria */
+        .theory-section {
+            display: none;
+            background-color: var(--secondary-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        /* Stile Blocco Dettagli (Teoria) */
+        details {
+            background-color: #45475a;
+            border: 1px solid #585b70;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        summary {
+            padding: 15px;
+            font-weight: bold;
+            color: var(--summary-color);
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .explanation-content {
+            padding: 15px;
+            border-top: 5px solid #ffffff;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .explanation-content ul {
+            list-style-type: '→ ';
+            padding-left: 20px;
+        }
+        
+        .explanation-content code {
+            font-family: "Courier New", Courier, monospace;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 1.1em;
+            color: var(--formula-color);
+            font-weight: bold;
+        }
+        
+        /* Stile Bottone "Torna al Menu" */
+        .back-button {
+            background-color: #000000;
+            color: var(--text-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #091c85;
+        }
+        
+        hr {
+            border: 0;
+            height: 3px;
+            background-color: #585b70;
+            margin: 1.5rem 0;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <font FACE="Times New Roman">
+        <div id="menu-view">
+            <h1>Teoria di Fisica</h1>
+            <ul id="main-menu">
+                <div class="category-title">CINEMATICA</div>
+                <li data-target="mrua">1. Moto Rettilineo Uniformemente Accelerato (MRUA)</li>
+                <li data-target="free-fall">2. Caduta Libera / Lancio Verticale</li>
+                <li data-target="projectile">3. Moto del Proiettile (moto Parabolico)</li>
+                <li data-target="horizontal-launch">4. Lancio Orizzontale</li>
+                <li data-target="circular-motion">5. Moto Circolare Uniforme</li>
+                <li data-target="harmonic-motion">6. Moto Armonico Semplice</li>
+                <li data-target="simple-pendulum">7. Pendolo Semplice</li>
+                
+                <div class="category-title">DINAMICA</div>
+                <li data-target="newton-laws">8. Leggi di Newton</li>
+                <li data-target="inclined-plane">9. Forze su Piano Inclinato</li>
+                <li data-target="equilibrium">10. Equilibrio di un Punto Materiale</li>
+                <li data-target="momentum-impulse">11. Quantità di Moto e Impulso</li>
+
+                <div class="category-title">LAVORO ED ENERGIA</div>
+                <li data-target="work-energy">12. Lavoro, Potenza ed Energia</li>
+
+                <div class="category-title">SISTEMI DI PARTICELLE E URTI</div>
+                <li data-target="center-of-mass">13. Moto del Centro di Massa</li>
+                <li data-target="collisions">14. Urti (Elastici e Anelastici)</li>
+
+                <div class="category-title">MOTI RELATIVI</div>
+                <li data-target="galilean-transformations">15. Trasformazioni di Galileo</li>
+            </ul>
+        </div>
+
+        <section id="mrua" class="theory-section">
+            <h2>Moto Rettilineo Uniformemente Accelerato (MRUA)</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>Il MRUA descrive il moto di un oggetto che si muove in linea retta con un'accelerazione (<b>a</b>) che rimane <b>costante</b> nel tempo.</p>
+                    <p><b>Caratteristiche:</b></p>
+                    <ul>
+                        <li>La velocità varia linearmente con il tempo.</li>
+                        <li>La traiettoria è rettilinea.</li>
+                    </ul>
+                    <p><b>Formule Chiave:</b></p>
+                    <ul>
+                        <li>Legge della velocità: <code>v = v₀ + a · t</code></li>
+                        <li>Legge oraria (posizione): <code>s = s₀ + v₀ · t + ½ a · t²</code></li>
+                        <li>Relazione di Torricelli (senza tempo): <code>v² = v₀² + 2a(s - s₀)</code></li>
+                    </ul>
+                </div>
+            </details>
+            
+            
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <p>I grafici seguenti rappresentano la posizione (s), la velocità (v) e l'accelerazione (a) in funzione del tempo (t) per un MRUA con accelerazione positiva.</p>
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="MRUA.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                    </div>
+                    <ul>
+                        <li><b>Grafico s-t</b> (Posizione-Tempo): Un arco di parabola, poiché <code>s</code> dipende da t².</li>
+                        <li><b>Grafico v-t</b> (Velocità-Tempo): Una retta inclinata (linearmente crescente). La pendenza è l'accelerazione <b>a</b>.</li>
+                        <li><b>Grafico a-t</b> (Accelerazione-Tempo): Una retta orizzontale, poiché l'accelerazione è <b>costante</b>.</li>
+                    </ul>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="free-fall" class="theory-section">
+            <h2>Caduta Libera / Lancio Verticale</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                     <p>È un caso particolare di MRUA dove l'accelerazione è sempre l'accelerazione di gravità (<b>g</b>). Se si assume l'asse Y verso l'alto, allora <code>a = -g</code>, con <code>g ≈ 9.81 m/s²</code>.</p>
+                    <p><b>Caratteristiche:</b></p>
+                    <ul>
+                        <li>La forza che agisce è solo la forza peso.</li>
+                        <li>Il moto è puramente verticale (lungo l'asse Y).</li>
+                    </ul>
+                    <p><b>Formule Chiave (applicate all'asse y):</b></p>
+                    <ul>
+                        <li>Legge della velocità: <code>v = v₀ - g · t</code></li>
+                        <li>Legge oraria (posizione): <code>y = y₀ + v₀ · t - ½ g · t²</code></li>
+                    </ul>
+                </div>
+
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="moto-verso-il-basso.gif" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" style="max-width: 100%; height: auto; border: 1px solid #585b70; border-radius: 5px; background-color: white;">
+                    </div>
+                </div>
+
+            <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="projectile" class="theory-section">
+            <h2>Moto del Proiettile (o moto Parabolico)</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>Descrive il moto di un oggetto lanciato con una velocità iniziale <b>v₀</b> e un angolo <b>θ</b> rispetto all'orizzontale. Il moto è sempre bidimensionale.</p>
+                    <p><b>Scomposizione del Moto:</b></p>
+                    <ul>
+                        <li><b>Asse X</b>: Moto Rettilineo Uniforme (MRU). <code>vₓ = v₀ · cos(θ)</code> è costante.</li>
+                        <li><b>Asse Y</b>: Moto Uniformemente Accelerato (MRUA) con <code>aᵧ = -g</code>.</li>
+                    </ul>
+                    <p><b>Leggi del moto:</b></p>
+                    <ul>
+                        <li>Posizione X: <code>x = v₀ₓ · t</code></li>
+                        <li>Posizione Y: <code>y = y₀ + v₀ᵧ · t - ½ g · t²</code></li>
+                    </ul>
+                </div>
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="moto del proiettile.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" style="max-width: 100%; height: auto; border: 1px solid #585b70; border-radius: 5px; background-color: white;">
+                    </div>
+                </div>
+
+            <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="horizontal-launch" class="theory-section">
+            <h2>Lancio Orizzontale</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>È un caso speciale del moto del proiettile con angolo di lancio iniziale <b>θ = 0°</b>. La velocità iniziale ha solo la componente orizzontale: <code>v₀ₓ = v₀</code> e <code>v₀ᵧ = 0</code>.</p>
+                    <p><b>Leggi del moto:</b></p>
+                    <ul>
+                        <li>Asse X (MRU): <code>x = v₀ · t</code></li>
+                        <li>Asse Y (Moto rettilineo unifiormemente accelerato): <code>y = y₀ - ½ g · t²</code></li>
+                    </ul>
+                </div>
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="lancio orizzontale.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="550">
+                    </div>
+                </div>
+
+            <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="circular-motion" class="theory-section">
+            <h2>Moto Circolare Uniforme</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>Moto su una circonferenza con <b>velocità (modulo) costante</b>. La velocità tangenziale cambia continuamente direzione, generando un'accelerazione.</p>
+                     <p><b>Elementi Chiave:</b></p>
+                    <ul>
+                        <li><b>Velocità tangenziale (<b>v</b>)</b>: distanza percorsa nell'unità di tempo.</li>
+                        <li><b>Velocità angolare (<b>ω</b>)</b>: angolo spazzato nell'unità di tempo (in rad/s).</li>
+                        <li><b>Accelerazione centripeta (<b>a_c</b>)</b>: sempre diretta verso il centro, mantiene il moto circolare.</li>                        
+                        <li><b>Periodo (<b>T</b>)</b>: è il tempo impiegato a percorrere un'intera circonferenza.</li>
+
+                    </ul>
+                    <p><b>Formule:</b></p>
+                    <ul>
+                        <li>Velocità tangenziale: <code>v = ω · r</code></li>
+                        <li>Accelerazione centripeta: <code>a_c = v² / r = ω² · r</code></li>
+                        <li>Periodo (T): <code>T = 2π / ω = 1/f</code></li>
+                    </ul>
+                </div>
+
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="moto circolare.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" style="max-width: 100%; height: auto; border: 1px solid #585b70; border-radius: 5px; background-color: white;">
+                    </div>
+                </div>
+
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="harmonic-motion" class="theory-section">
+            <h2>Moto Armonico Semplice</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>Moto oscillatorio periodico (es. massa-molla) causato da una <b>Forza di Richiamo</b> proporzionale allo spostamento (Legge di Hooke: <code>F = -kx</code>).</p>
+                    <p><b>Elementi Chiave:</b></p>
+                    <ul>
+                        <li><b>Ampiezza (<b>A</b>)</b>: massimo spostamento dalla posizione di equilibrio.</li>
+                        <li><b>Pulsazione (<b>ω</b>)</b>: nel sistema massa-molla, <code>ω = √(k/m)</code>.</li>
+                        <li>La velocità è massima nel centro (equilibrio) e nulla agli estremi.</li>
+                        <li>L'accelerazione è massima agli estremi e nulla nel centro.</li>
+                    </ul>
+                    <p><b>Formule Chiave:</b></p>
+                    <ul>
+                        <li>Legge oraria della posizione: <code>x(t) = A · cos(ωt + φ)</code></li>
+                        <li>Velocità: <code>vₘₐₓ = A · ω</code></li>
+                        <li>Accelerazione: <code>aₘₐₓ = A · ω²</code></li>
+                    </ul>
+                </div>
+
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="moto armonico.gif" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="550">
+                    </div>
+                </div>
+
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="simple-pendulum" class="theory-section">
+            <h2>Pendolo Semplice</h2>
+                <summary>Teoria e Formula Chiave</summary>
+                <div class="explanation-content">
+                    <p>Per <b>piccole oscillazioni</b>, il moto del pendolo è approssimabile a un moto armonico. Il periodo è indipendente dalla massa e dall'ampiezza.</p>
+                    <p><b>Formula Chiave (Periodo):</b></p>
+                    <p>Dipende solo dalla lunghezza del filo (<b>L</b>) e dalla gravità (<b>g</b>).</p>
+                    <code>T = 2π · √(L/g)</code>
+                </div>
+                <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="pendolo.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="550">
+                    </div>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="newton-laws" class="theory-section">
+            <h2>Leggi di Newton</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p><b><font FACE="Times New Roman">I</font> Legge (Inerzia):</b> Un corpo non cambia il suo stato di moto (riposo o MRU) se la forza netta è nulla (<code>ΣF = 0</code>).</p>
+                    <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="INewton.webp" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                    </div>
+                    <hr>
+                    <p><b><font FACE="Times New Roman">II</font> Legge (Principio di proporzionalità:</b> La forza risultante su un corpo è la causa della sua accelerazione.</p>
+                    <p><b>Formula Chiave:</b></p>
+                    <code>ΣF = m · a</code>
+                    <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="IInewton.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                    </div>
+                    <hr>
+                    <p><b><font FACE="Times New Roman">III</font> Legge (Azione e Reazione):</b> ad ogni forza (azione) corrisponde una forza uguale e contraria (reazione) applicata a un corpo diverso.</p>
+                    <summary>Rappresentazione Grafica</summary>
+                <div class="explanation-content">
+                    <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                        <img src="IIINewton.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                    </div>
+                </div>
+                
+                </div>
+                        <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="inclined-plane" class="theory-section">
+            <h2>Forze su Piano Inclinato</h2>
+                <summary>Teoria e Formule Chiave</summary>
+                <div class="explanation-content">
+                    <p>La forza peso (<b>P = mg</b>) viene scomposta in due componenti rispetto a un piano inclinato di angolo <b>θ</b>.</p>
+                    <ul>
+                        <li><b>Componente Parallela (<b>P∥</b>)</b>: tende a far scivolare il corpo lungo il piano. <code>P∥ = mg · sin(θ)</code></li>
+                        <li><b>Componente Perpendicolare (<b>P⊥</b>)</b>: preme sul piano. <code>P⊥ = mg · cos(θ)</code></li>
+                        <li><b>Reazione Normale (<b>N</b>)</b>: equilibrante di <code>P⊥</code>, quindi <code>N = P⊥</code>.</li>
+                        <li><b>Forza d'Attrito (<b>Fₐ</b>)</b>: <code>Fₐ = μ · N</code>. Si oppone al moto.</li>
+                    </ul>
+                    <p>Il moto è determinato dalla forza risultante lungo il piano: <code>ΣF = P∥ ± Fₐ ± Fₐₚₚ</code>.</p>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="piano inclinato.gif" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="equilibrium" class="theory-section">
+            <h2>Equilibrio di un Punto Materiale</h2>
+                <summary>Teoria e Condizione Fondamentale</summary>
+                <div class="explanation-content">
+                    <p>Un punto materiale è in <b>Equilibrio Statico</b> se è a riposo (o in <b>Equilibrio Dinamico</b> se si muove a velocità costante).</p>
+                    <p><b>Condizione Fondamentale:</b></p>
+                    <p>La somma vettoriale di tutte le forze che agiscono sul corpo deve essere nulla.</p>
+                    <code>ΣF⃗ = 0  =>  ΣFₓ = 0, ΣFᵧ = 0</code>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="punto materiale.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="momentum-impulse" class="theory-section">
+            <h2>Quantità di Moto e Impulso</h2>
+                <summary>Teoria e Teorema dell'Impulso</summary>
+                <div class="explanation-content">
+                    <p><b>Quantità di Moto (p):</b> è una misura della "quantità di movimento" di un corpo.</p>
+                    <code>p⃗ = m · v⃗</code>
+                    <hr>
+                    <p><b>Impulso (I):</b> l'effetto di una forza che agisce per un intervallo di tempo brevissimo.</p>
+                    <code>I⃗ = F⃗ · Δt</code>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="impulso.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                    <hr>
+                    <p><b>Teorema dell'Impulso:</b> l'impulso applicato a un corpo è uguale alla variazione della sua quantità di moto.</p>
+                    <code>I⃗ = Δp⃗ = pƒ⃗ - pᵢ⃗</code>
+                    
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="work-energy" class="theory-section">
+            <h2>Lavoro, Potenza ed Energia</h2>
+                <summary>Teoria e Teoremi Principali</summary>
+                <div class="explanation-content">
+                    <p><b>Lavoro (L):</b> l'energia trasferita da una forza. È una grandezza scalare.</p>
+                    <code>L = F · s · cos(θ)</code> (θ è l'angolo tra F e s, viene usata solo se la forza non è pararllela allo spostamento)
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="lavoro.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                    <hr>
+                    <p><b>Energia Cinetica (K):</b> energia associata al moto.</p>
+                    <code>K = ½ m v²</code>
+                    <p><b>Energia Potenziale Gravitazionale (U):</b> energia associata alla posizione verticale.</p>
+                    <code>U = m g h</code>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="energia.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                    <hr>
+                    <p><b>Teorema Lavoro-Energia Cinetica:</b> il lavoro totale è pari alla variazione di energia cinetica.</p>
+                    <code>ΣL = ΔK = Kƒ - Kᵢ</code>
+                    <p><b>Conservazione Energia Meccanica:</b> se agiscono solo forze conservative (come gravità), l'energia meccanica (<code>E = K + U</code>) si conserva: <code>Eᵢ = Eƒ</code>.</p>
+                    <hr>
+                    <p><b>Potenza (P):</b> Velocità con cui il lavoro viene compiuto.</p>
+                    <code>P = L / t</code>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+        
+        <section id="center-of-mass" class="theory-section">
+            <h2>Moto del Centro di Massa</h2>
+                <summary>Teoria e Formula del Centro di Massa</summary>
+                <div class="explanation-content">
+                    <p>Il <b>Centro di Massa (CM)</b> è un punto geometrico che rappresenta la media pesata della posizione di tutte le masse in un sistema.</p>
+                    <p><b>Formula (per due particelle in 1D):</b></p>
+                    <code>x_cm = (m₁x₁ + m₂x₂) / (m₁ + m₂)</code>
+                    <p><b>Prima Legge del Moto del CM:</b> il centro di massa di un sistema si muove come se tutta la massa fosse concentrata in quel punto e tutte le forze esterne agissero su di esso: <code>Fₑₓₜ = Mₛᵢₛ · a_cm</code>.</p>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="centro di massa.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="collisions" class="theory-section">
+            <h2>Urti (Elastici e Anelastici)</h2>
+                <summary>Teoria e Conservazione</summary>
+                <div class="explanation-content">
+                    <p>In ogni urto (sistema isolato), la <b>Quantità di Moto Totale</b> si conserva:</p>
+                    <code>m₁v₁ᵢ + m₂v₂ᵢ = m₁v₁ƒ + m₂v₂ƒ</code>
+                    <hr>
+                    <p><b>Urto Completamente Anelastico:</b></p>
+                    <ul>
+                        <li>I corpi rimangono attaccati dopo l'urto (<code>v₁ƒ = v₂ƒ = vƒ</code>).</li>
+                        <li>L'energia cinetica <b>non si conserva</b> (massima dissipazione).</li>
+                    </ul>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="urto an.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                        <hr>
+                    <p><b>Urto Elastico:</b></p>
+                    <ul>
+                        <li>I corpi si separano dopo l'urto.</li>
+                        <li>Si conserva <b>sia</b> la quantità di moto <b>sia</b> l'energia cinetica totale.</li>
+                    </ul>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="urto el.png" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+
+        <section id="galilean-transformations" class="theory-section">
+            <h2>Trasformazioni di Galileo</h2>
+                <summary>Teoria e Formule</summary>
+                <div class="explanation-content">
+                    <p>Descrivono come le coordinate di posizione e velocità cambiano tra due <b>sistemi di riferimento inerziali</b> (S e S'), dove S' si muove a velocità costante <b>V</b> rispetto a S.</p>
+                    <hr>
+                     <p><b>Trasformazione relativa alla posizione:</b></p>
+                    <code>x' = x - V · t</code>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="trasf.posizione.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                        <hr>
+                    <p><b>Trasformazione relativa alla velocità:</b></p>
+                    <code>u' = u - V</code>
+                    <summary>Rappresentazione Grafica</summary>
+                    <div class="explanation-content">
+                        <div style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                            <img src="trasf. velocità.jpg" alt="Grafici di posizione-tempo, velocità-tempo e accelerazione-tempo per MRUA" width="600">
+                        </div>
+                        <hr>
+                    <p><b>Invarianza:</b> L'accelerazione (e quindi la Forza) è la stessa in entrambi i sistemi di riferimento galileiani: <code>a' = a</code>.</p>
+                </div>
+            <button class="back-button">Torna al Menu</button>
+        </section>
+    </font>
+    </main>
+
+    <script>
+        // --- GESTIONE INTERFACCIA UTENTE (SEMPLIFICATA) ---
+        const menuView = document.getElementById('menu-view');
+        const theorySections = document.querySelectorAll('.theory-section');
+        
+        // Funzione per mostrare la sezione di teoria selezionata
+        document.getElementById('main-menu').addEventListener('click', (e) => {
+            if (e.target.tagName === 'LI') {
+                const targetId = e.target.dataset.target;
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    // Nasconde il menu e mostra la sezione
+                    menuView.style.display = 'none';
+                    theorySections.forEach(s => s.style.display = 'none');
+                    targetSection.style.display = 'block';
+                    // Scrolla all'inizio della sezione
+                    window.scrollTo(0, 0);
+                }
+            }
+        });
+
+        // Funzione per tornare al menu
+        document.querySelectorAll('.back-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Nasconde la sezione e mostra il menu
+                theorySections.forEach(s => s.style.display = 'none');
+                menuView.style.display = 'block';
+                // Scrolla all'inizio del menu
+                window.scrollTo(0, 0);
+            });
+        });
+    </script>
+
+</body>
+</html>
